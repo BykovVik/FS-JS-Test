@@ -5,7 +5,7 @@ import Layout from "../components/layout/layout";
 const Login = () => {
     return(
         <Layout>
-            <AuthForm/>
+            <AuthForm title="registration"/>
         </Layout>
     )
 }
