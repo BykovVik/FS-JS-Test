@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import { Form, Button, Col } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import http from "../../http-common";
+import { AxiosRequestConfig } from "axios";
 import './AuthForm.css'
 
 //Props block
@@ -14,19 +15,33 @@ type FormType = {
     password: string;
     date: string;
     gender: string;
-    avatar: string;
+    avatar: File | null;
 }
 type CHBState = {
     man: boolean;
     woman: boolean;
 }
+//Axios query configuration
+const config: AxiosRequestConfig = {
+    headers: {
+      'Content-Type': 'multipart/form-data' 
+    },
+};
 
 const AuthForm = (props:Props) => {
 
     //UseState block
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [checkBoxState, setCheckBoxState] = useState<CHBState>({man: false, woman: false})
-    const [formData, setFormData] = useState<FormType>({name: "", email: "", password: "", date: "", gender: "", avatar: ""})
+    const [formData, setFormData] = useState<FormType>({
+        name: "",
+        email: "",
+        password: "",
+        date: "",
+        gender: "",
+        avatar: null
+    })
 
     //Handler block
     const handleDateChange = (date: Date | null) => {
@@ -37,22 +52,33 @@ const AuthForm = (props:Props) => {
         const isChecked = event.target.checked;
         setCheckBoxState({ ...checkBoxState, [name]: isChecked});
     }
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-
-        formData.date = String(selectedDate?.toLocaleDateString())
-        formData.gender = String(checkBoxState.man ? "man" : "woman")
-        console.log("ЭТОО", formData)
-        try {
-          const response = await http.post('/api/users', formData);
-          console.log(response.data); 
-        } catch (error) {
-          console.error(error);
+    const handleFileInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files && event.target.files.length > 0) {
+            setSelectedFile(event.target.files[0]);
         }
     };
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
         setFormData({ ...formData, [name]: value });
+    };
+    //Submit handler
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        //adding date data
+        formData.date = String(selectedDate?.toLocaleDateString())
+        //adding gender data
+        formData.gender = String(checkBoxState.man ? "man" : "woman")
+        //adding file data
+        formData.avatar = selectedFile ? selectedFile : null
+        //sending form data to the server
+        console.log("ЭТООО", formData)
+        try {
+            const response = await http.post('/api/users', formData, config);
+            console.log(response.data);
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     return(
@@ -99,7 +125,7 @@ const AuthForm = (props:Props) => {
 
                 <Form.Group className="formString">
                     <Form.Label>Photo:</Form.Label>
-                    <Form.Control type="file" />
+                    <Form.Control type="file" name="file" accept="image/*" onChange={handleFileInputChange}/>
                 </Form.Group>
                 
                 <Button variant="success" type="submit">
