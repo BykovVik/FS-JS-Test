@@ -1,0 +1,62 @@
+.loginForm {
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+}
+.loginForm > form {
+    align-self: center;
+}
+.loginForm > form > button {
+    width: 100%;
+    padding: 2%;
+}
+.formString > label {
+    display: block;
+    margin-bottom: 3px;
+}
+.formString {
+    margin-bottom: 10px;
+}
+.formString > input {
+    outline: none;
+    padding: 2%;
+}
+form > button {
+    margin-top: 12px;
+}
+.form-check-input:checked {
+    background-color: #157347;
+    border-color: #157347;
+}
+
+.fade-in {
+    opacity: 0;
+    animation-name: fadeInOpacity;
+    animation-duration: 2s;
+    animation-fill-mode: forwards;
+  }
+  
+  @keyframes fadeInOpacity {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+.fade-out {
+    opacity: 1;
+    animation-name: fadeOutOpacity;
+    animation-duration: 2s;
+    animation-fill-mode: forwards;
+}
+  
+@keyframes fadeOutOpacity {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+}

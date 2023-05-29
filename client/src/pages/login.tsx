@@ -1,11 +1,11 @@
 import React from "react";
-import AuthForm from "../components/auth/AuthForm";
+import RegForm from "../components/auth/RegForm";
 import Layout from "../components/layout/layout";
 
 const Login = () => {
     return(
         <Layout>
-            <AuthForm title="registration"/>
+            <RegForm/>
         </Layout>
     )
 }
