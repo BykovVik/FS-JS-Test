@@ -12,5 +12,5 @@
         "*": ["node_modules/*"]
       }
     },
-    "include": ["./", "db.ts"]
+    "include": ["./", "db.ts", "routes/.ts"]
 }

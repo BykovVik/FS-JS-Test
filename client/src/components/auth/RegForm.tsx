@@ -6,9 +6,9 @@ import { AxiosRequestConfig } from "axios";
 import './Forms.css'
 import AlertBox from "./AlertBlock";
 
-//Props block
+//Types block
 type Props = {
-    title: string
+    changeState: Function
 }
 type FormType = {
     name: string;
@@ -17,6 +17,7 @@ type FormType = {
     date: string;
     gender: string;
     avatar: File | null;
+    token: string
 }
 type CHBState = {
     man: boolean;
@@ -27,13 +28,13 @@ const config: AxiosRequestConfig = {
     headers: { 'Content-Type': 'multipart/form-data' },
 };
 
-const RegForm = () => {
+const RegForm = (props: Props) => {
 
     //UseState block
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [checkBoxState, setCheckBoxState] = useState<CHBState>({man: false, woman: false})
-    const [formData, setFormData] = useState<FormType>({name: "", email: "", password: "", date: "", gender: "", avatar: null})
+    const [formData, setFormData] = useState<FormType>({name: "", email: "", password: "", date: "", gender: "", avatar: null, token: ""})
     const [error, setError] = useState<boolean | null>(null);
 
     //Handler block
@@ -55,6 +56,9 @@ const RegForm = () => {
         setFormData({ ...formData, [name]: value });
         setError(false)
     };
+    const goLoginPage = () => {
+        props.changeState(true)
+    }
     //Submit handler
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -72,7 +76,8 @@ const RegForm = () => {
 
         //send form-data
         if (nameDuplication.data.length === 0 && emailDuplication.data.length === 0) {
-            await http.post('/api/users', formData, config);
+            props.changeState(true)
+            await http.post('/api/registration', formData, config);
         } else {
             setError(true)
         }
@@ -81,24 +86,23 @@ const RegForm = () => {
     return(
         <Col className="loginForm">
             <Form onSubmit={handleSubmit}>
+                <div className="text-center mb-4">
+                    <h1>Registration</h1>
+                </div>
                 <Form.Group className="formString">
-                    <Form.Label>Name:</Form.Label>
-                    <Form.Control type="text" placeholder="Введите имя" name="name" value={formData.name} onChange={handleInputChange} required/>
+                    <Form.Control type="text" placeholder="Name" name="name" value={formData.name} onChange={handleInputChange} required/>
                 </Form.Group>
 
                 <Form.Group className="formString">
-                    <Form.Label>Email:</Form.Label>
-                    <Form.Control type="email" placeholder="Введите email" name="email" value={formData.email} onChange={handleInputChange} required/>
+                    <Form.Control type="email" placeholder="Email" name="email" value={formData.email} onChange={handleInputChange} required/>
                 </Form.Group>
 
                 <Form.Group className="formString">
-                    <Form.Label>Password:</Form.Label>
-                    <Form.Control type="password" placeholder="Пароль" name="password" value={formData.password} onChange={handleInputChange} required/>
+                    <Form.Control type="password" placeholder="Password" name="password" value={formData.password} onChange={handleInputChange} required/>
                 </Form.Group>
 
                 <Form.Group className="formString">
-                    <Form.Label>Date of birth:</Form.Label>
-                    <DatePicker selected={selectedDate} onChange={handleDateChange} dateFormat="dd.MM.yyyy" className="form-control" required/>
+                    <DatePicker selected={selectedDate} placeholderText="Date to birthd" onChange={handleDateChange} dateFormat="dd.MM.yyyy" className="form-control" required/>
                 </Form.Group>
 
                 <Form.Group className="formString">
@@ -107,18 +111,21 @@ const RegForm = () => {
                 </Form.Group>
 
                 <Form.Group className="formString">
-                    <Form.Label>Photo:</Form.Label>
+                    <Form.Label>Choose profile photo:</Form.Label>
                     <Form.Control type="file" name="file" accept="image/*" onChange={handleFileInputChange} required/>
                 </Form.Group>
                 
                 <Button variant="success" type="submit" className="mb-4">
                     Submit
                 </Button>
+                <div className="mb-4 text-center">
+                    <a href="#" onClick={goLoginPage}>Go to Login page</a>
+                </div>
                 {error &&
-                    <AlertBox addClass="fade-in" />
+                    <AlertBox addClass="fade-in" addText="we already have a registered user with the same name or email"/>
                 }
                 {!error &&
-                    <AlertBox addClass="fade-out" />
+                    <AlertBox addClass="fade-none" addText="we already have a registered user with the same name or email"/>
                 }
             </Form>
         </Col>

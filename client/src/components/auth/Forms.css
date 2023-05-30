@@ -44,19 +44,6 @@ form > button {
       opacity: 1;
     }
   }
-  
-.fade-out {
-    opacity: 1;
-    animation-name: fadeOutOpacity;
-    animation-duration: 2s;
-    animation-fill-mode: forwards;
-}
-  
-@keyframes fadeOutOpacity {
-    0% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0;
-    }
+.fade-none {
+    opacity: 0;
 }
