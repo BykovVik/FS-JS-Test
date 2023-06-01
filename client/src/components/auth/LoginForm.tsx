@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import { Form, Button, Col } from "react-bootstrap";
 import AlertBox from "./AlertBlock";
 import http from "../../http-common";
+import { useNavigate } from "react-router-dom";
 
 //Types block
 type Props = {
@@ -14,6 +15,8 @@ type FormType = {
 
 const LoginForm = (props:Props) => {
 
+    const navigate = useNavigate();
+    
     const [error, setError] = useState<boolean | null>(null);
     const [formData, setFormData] = useState<FormType>({
         email: "",
@@ -35,10 +38,13 @@ const LoginForm = (props:Props) => {
         const user = await http.get('/api/get-user-by-email', { params: { email: formData.email} });
 
         //send form-data
-        if (user.data.length != 0) {
+        if (user.data.length !== 0) {
             if (user.data[0].password === formData.password) {
                 const response = await http.post('/api/auth', formData);
                 localStorage.setItem('token', String(response.data.token));
+                localStorage.setItem('email', String(user.data[0].email));
+                localStorage.setItem('password', String(user.data[0].password));
+                navigate('/people');
             } else {
                 setError(true)
             }

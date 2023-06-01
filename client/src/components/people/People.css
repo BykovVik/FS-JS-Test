@@ -1,0 +1,16 @@
+.people {
+    min-height: 200px;
+    padding: 2%;
+    margin: 1%;
+    cursor: pointer;
+}
+.card-items {
+    height: 100%;
+}
+.card-item {
+    align-self: center;
+}
+.avatar {
+    width: 100%;
+    border-radius: 5%;
+}

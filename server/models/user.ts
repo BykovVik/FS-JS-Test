@@ -8,7 +8,6 @@ export interface IUser {
     date: string,
     gender: string,
     avatar: string,
-    token: string
 }
 
 const userScheme = new Schema<IUser>({
@@ -18,7 +17,6 @@ const userScheme = new Schema<IUser>({
     date: { type: String, required: true },
     gender: { type: String, required: true },
     avatar: String,
-    token: String
 })
 
 export const User = model<IUser>('User', userScheme)

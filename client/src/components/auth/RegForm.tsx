@@ -17,7 +17,6 @@ type FormType = {
     date: string;
     gender: string;
     avatar: File | null;
-    token: string
 }
 type CHBState = {
     man: boolean;
@@ -34,7 +33,7 @@ const RegForm = (props: Props) => {
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [checkBoxState, setCheckBoxState] = useState<CHBState>({man: false, woman: false})
-    const [formData, setFormData] = useState<FormType>({name: "", email: "", password: "", date: "", gender: "", avatar: null, token: ""})
+    const [formData, setFormData] = useState<FormType>({name: "", email: "", password: "", date: "", gender: "", avatar: null})
     const [error, setError] = useState<boolean | null>(null);
 
     //Handler block
@@ -102,7 +101,7 @@ const RegForm = (props: Props) => {
                 </Form.Group>
 
                 <Form.Group className="formString">
-                    <DatePicker selected={selectedDate} placeholderText="Date to birthd" onChange={handleDateChange} dateFormat="dd.MM.yyyy" className="form-control" required/>
+                    <DatePicker selected={selectedDate} placeholderText="Date to birthd" onChange={handleDateChange} dateFormat="yyyy.MM.dd" className="form-control" required/>
                 </Form.Group>
 
                 <Form.Group className="formString">

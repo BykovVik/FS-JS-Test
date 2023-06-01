@@ -1,0 +1,28 @@
+.navbar-collapse {
+    flex-grow: 0;
+}
+.navbar {
+    background-color: #157347;
+}
+.navbar-brand {
+    color: white;
+}
+#basic-nav-dropdown {
+    color: white;
+}
+.block-401 {
+    display: flex;
+    min-height: 100vh;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+.block-401 > div {
+    text-align: center;
+}
+.block-401 > div > p {
+    font-size: 30px;
+}
+.block-401 > div > h1 {
+    font-size: 80px;
+}
