@@ -33,23 +33,28 @@ const LoginForm = (props:Props) => {
     //Submit handler
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
-        //check user by email
-        const user = await http.get('/api/get-user-by-email', { params: { email: formData.email} });
-
-        //send form-data
-        if (user.data.length !== 0) {
-            if (user.data[0].password === formData.password) {
-                const response = await http.post('/api/auth', formData);
-                localStorage.setItem('token', String(response.data.token));
-                localStorage.setItem('email', String(user.data[0].email));
-                localStorage.setItem('password', String(user.data[0].password));
-                navigate('/people');
+        try {
+            //check user by email
+            const user = await http.get('/api/get-user-by-email', { params: { email: formData.email} });
+            //send form-data
+            if (user.data.length !== 0) {
+                if (user.data[0].password === formData.password) {
+                    const response = await http.post('/api/auth', formData);
+                    //adds the required data to local storage
+                    localStorage.setItem('id', String(user.data[0]._id));
+                    localStorage.setItem('token', String(response.data.token));
+                    localStorage.setItem('email', String(user.data[0].email));
+                    localStorage.setItem('password', String(user.data[0].password));
+                    navigate('/people');
+                } else {
+                    setError(true)
+                }
             } else {
                 setError(true)
             }
-        } else {
-            setError(true)
+        } catch(error) {
+            console.log(error)
+            return error;
         }
     };
     return(
@@ -70,7 +75,7 @@ const LoginForm = (props:Props) => {
                     Submit
                 </Button>
                 <div className="mb-4 text-center">
-                    <a href="#" onClick={goRegPage}>Go to Registration page</a>
+                    <p onClick={goRegPage}>Go to Registration page</p>
                 </div>
                 {error &&
                     <AlertBox addClass="fade-in" addText="Email or password is incorrect, please try again"/>

@@ -9,6 +9,7 @@ const Login = () => {
     const navigate = useNavigate();
     const [regState, setRegState] = useState<Boolean>(false);
 
+    //user authorization check and redirect in case of authorization
     useEffect(()=> {
         const token = localStorage.getItem("token")
         if(token) {

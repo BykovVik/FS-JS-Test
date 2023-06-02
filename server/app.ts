@@ -6,6 +6,7 @@ import routes from './routes/route'
 import bodyParser = require('body-parser')
 import path from 'path'
 
+
 dotenv.config()
 const app = express()
 const port = process.env.PORT
@@ -21,5 +22,4 @@ async function main() {
 }
   
 main();
-
 app.listen(port)

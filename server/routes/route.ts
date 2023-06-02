@@ -4,6 +4,7 @@ import { User, IUser } from '../models/user';
 import multer from 'multer';
 import jwt from 'jsonwebtoken';
 import storage from './storage_route';
+import * as fs from 'fs'
 
 const routes = Router();
   
@@ -38,7 +39,23 @@ routes.post('/api/registration', upload.single('avatar'), async (req: Request, r
     const avatar = req.file.path;
     const user = new User<IUser>({name, email, password, date, gender, avatar})
     await user.save()
-    
+})
+
+routes.post('/api/edit-user', upload.single('avatar'), async (req: Request, res: Response) => {
+
+    const {id, name, password} = req.body
+    const avatar = req.file.path;
+    const u = await User.find({_id: id})
+
+    fs.unlink(`./${u[0].avatar}`, (err: NodeJS.ErrnoException | null) => {
+        if (err) {
+          console.error(err);
+          res.status(500).send('Ошибка удаления файла');
+        } else {
+          res.send(`Файл ${u[0].avatar} успешно удален`);
+        }
+    });
+    await User.findOneAndUpdate({_id: id},{name: name, password: password, avatar: avatar}, {new: true})
 })
 
 routes.post('/api/auth', async (req: Request, res: Response) => {
@@ -54,12 +71,5 @@ routes.post('/api/check-auth', async (req: Request, res: Response) => {
     const decoded = jwt.verify(token, process.env.SECRET_KEY);
     res.json({decoded})
 })
-
-
-//Users endpoints UPDATE
-routes.post('/api/upload', (req: Request, res: Response) => {
-    console.log(req.file); 
-    res.send('file uploaded successfully');
-});
 
 export default routes;

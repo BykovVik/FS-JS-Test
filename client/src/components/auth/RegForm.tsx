@@ -118,7 +118,7 @@ const RegForm = (props: Props) => {
                     Submit
                 </Button>
                 <div className="mb-4 text-center">
-                    <a href="#" onClick={goLoginPage}>Go to Login page</a>
+                    <p onClick={goLoginPage}>Go to Login page</p>
                 </div>
                 {error &&
                     <AlertBox addClass="fade-in" addText="we already have a registered user with the same name or email"/>

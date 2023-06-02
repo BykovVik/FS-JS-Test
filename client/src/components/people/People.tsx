@@ -7,20 +7,17 @@ import { Link } from "react-router-dom";
 const People = () => {
     
     const [people, setPeople] = useState([])
-    const baseUrl = "http://localhost:3333/"
+    const baseUrl = "http://127.0.0.1:3333/"
 
     useEffect(() => {
-        const getUser = async() => {
-            await http.get('/api/users', {
-                headers: {Authorization: `Bearer ${localStorage.getItem("token")}`,}
-            })
-            .then((result:any) => {
-                setPeople(result.data)
-            })
+        const getUsers = async() => {
+            const res = await http.get('/api/users')
+            setPeople(res.data)    
         }
-        getUser()
-    }, [])
+        getUsers()
+    }, [people])
 
+    //calculates the user's age
     const checkAge = (date:string) => {
         const birthday = new Date(date);
         const ageDifMs = Date.now() - birthday.getTime();

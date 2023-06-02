@@ -1,3 +1,6 @@
 .account {
     width: 100%;
 }
+.editform > form > button {
+    width: 100%;
+}
